@@ -19,3 +19,5 @@ __debug_bin
 *.log
 pact.log
 _logs/
+dbdata
+dbdata/
