@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -17,6 +18,20 @@ type TokenResponse struct {
 }
 
 func GenerateToken(userID uuid.UUID) token {
+	claims := token{
+			UserID: userID,
+			StandardClaims: jwt.StandardClaims{
+				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+				Audience:  "http://krakend:5000",
+				Issuer:    "http://identity-service:8081",
+			},
+	}
+	tokenize := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	mySigningKey := []byte("my_secret_key")
+	tokenString, _ := tokenize.SignedString(mySigningKey)
+	fmt.Println(tokenString)
+
+
 	return token{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{

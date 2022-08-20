@@ -27,7 +27,7 @@
             }
         },
         "github_com/devopsfaith/krakend-gologging": {
-            "level": "ERROR",
+            "level": "DEBUG",
             "prefix": "[KRAKEND]",
             "syslog": false,
             "stdout": true,
@@ -60,10 +60,10 @@
                 "github.com/devopsfaith/krakend-jose/signer": {
                     "alg": "HS256",
                     "kid": "sim1",
-                    "keys-to-sign": [
+                    "keys_to_sign": [
                         "access_token"
                     ],
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true
                 }
             }
@@ -101,7 +101,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
@@ -146,7 +146,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true
                 }
             },
@@ -182,7 +182,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true,
                     "propagate-claims": [
                         [
@@ -224,7 +224,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true
                 }
             },
@@ -260,7 +260,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true
                 }
             },
@@ -301,7 +301,7 @@
                         "http://krakend:5000"
                     ],
                     "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
                     "disable_jwk_security": true,
                     "propagate-claims": [
                         [
