@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/faozimipa/micro/services.product/src/entity"
+	"github.com/faozimipa/micro/services.product/src/internal"
 	"github.com/faozimipa/micro/services.product/src/event"
 	"github.com/faozimipa/micro/shared/config"
 	"github.com/faozimipa/micro/shared/kafka"
