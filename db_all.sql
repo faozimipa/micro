@@ -1,3 +1,4 @@
+CREATE DATABASE "dbkeyloack";
 CREATE DATABASE "identity";
 CREATE DATABASE "customer";
 CREATE DATABASE "order";
