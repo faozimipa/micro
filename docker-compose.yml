@@ -5,11 +5,11 @@ services:
     image: postgres:10.6-alpine
     container_name: go_postgres
     ports:
-      - "5492:5432"
-    networks: 
+      - 5492:5432
+    networks:
       - broker-kafka
     environment:
-      - POSTGRES_USER=dbadmin 
+      - POSTGRES_USER=dbadmin
       - POSTGRES_PASSWORD=dbadmin
     volumes:
       - ./db_all.sql:/docker-entrypoint-initdb.d/create_tables.sql
@@ -20,31 +20,32 @@ services:
     image: devopsfaith/krakendesigner:latest
     container_name: krakend_designer
     ports:
-      - "8787:80"
+      - 8787:80
     restart: always
-  
+
   krakend:
     container_name: krakend
     image: devopsfaith/krakend:latest
-    networks: 
+    entrypoint: /usr/bin/krakend run -d -c /etc/krakend/krakend.json
+    networks:
       - broker-kafka
     depends_on:
       - postgres
     volumes:
       - ./api_gateway:/etc/krakend
     ports:
-      - "5000:5000"
-      - "8090:8090"
+      - 5000:5000
+      - 8090:8090
     restart: always
 
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
-    networks: 
+    networks:
       - broker-kafka
     ports:
-      - "16686:16686"
-      - "14268:14268"
+      - 16686:16686
+      - 14268:14268
     restart: always
 
   grafana:
@@ -52,16 +53,16 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./_grafana
-    networks: 
+    networks:
       - broker-kafka
     ports:
-      - "3003:3000"
+      - 3003:3000
     restart: always
 
   influxdb:
     image: influxdb:latest
     container_name: influxdb
-    networks: 
+    networks:
       - broker-kafka
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
@@ -70,13 +71,14 @@ services:
       DOCKER_INFLUXDB_INIT_ORG: myorg
       DOCKER_INFLUXDB_INIT_BUCKET: krakend
     ports:
-      - "8086:8086"
+      - 8086:8086
     restart: always
-      
+
   file_server:
     image: jaxgeller/lwan
     container_name: file_server
-    networks: 
+    platform: linux/amd64
+    networks:
       - broker-kafka
     volumes:
       - ./_file_server:/lwan/wwwroot
@@ -87,7 +89,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
-    networks: 
+    networks:
       - broker-kafka
     ports:
       - 2181:2181
@@ -98,7 +100,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - zookeeper
@@ -123,7 +125,8 @@ services:
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     container_name: kafdrop
-    networks: 
+    platform: linux/amd64
+    networks:
       - broker-kafka
     depends_on:
       - kafka
@@ -132,15 +135,47 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
     restart: always
-    
+
+  keycloak:
+    # image: jboss/keycloak:13.0.1
+    # image: sleighzy/keycloak
+    # image: quay.io/keycloak/keycloak:legacy
+    build:
+     context: ./
+     dockerfile: ./keyloack/Dockerfile
+     args:
+        ADMIN_USERNAME: admin
+        ADMIN_PASSWORD: admin
+    container_name: keycloak
+    # platform: linux/amd64
+    # restart: unless-stopped
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - broker-kafka
+    ports:
+      - 8080:8080 # expose to host port 8403
+      - 9990:9990
+      - 8443:8443
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_PORT: 5432
+      DB_DATABASE: dbkeyloack
+      DB_USER: dbadmin
+      DB_PASSWORD: dbadmin
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
+
   identity-service:
     build:
       context: ./
-      dockerfile: ./services.identity/Dockerfile 
+      dockerfile: ./services.identity/Dockerfile
     container_name: identity_service
     ports:
       - 8081:8081
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - postgres
@@ -153,7 +188,6 @@ services:
       - KAFKA_BROKER_ADDRESS=kafka:9092
     restart: always
 
-
   customer-service:
     build:
       context: ./
@@ -161,7 +195,7 @@ services:
     container_name: customer_service
     ports:
       - 8082:8082
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - postgres
@@ -177,11 +211,11 @@ services:
   product-service:
     build:
       context: ./
-      dockerfile: ./services.product/Dockerfile 
+      dockerfile: ./services.product/Dockerfile
     container_name: product_service
     ports:
       - 8083:8083
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - postgres
@@ -197,11 +231,11 @@ services:
   notification-service:
     build:
       context: ./
-      dockerfile: ./services.notification/Dockerfile 
+      dockerfile: ./services.notification/Dockerfile
     container_name: notification_service
     ports:
       - 8084:8084
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - postgres
@@ -217,11 +251,11 @@ services:
   order-service:
     build:
       context: ./
-      dockerfile: ./services.order/Dockerfile 
+      dockerfile: ./services.order/Dockerfile
     container_name: order_service
     ports:
       - 8085:8085
-    networks: 
+    networks:
       - broker-kafka
     depends_on:
       - postgres
@@ -234,7 +268,6 @@ services:
       - KAFKA_BROKER_ADDRESS=kafka:9092
       - CUSTOMER_SERVICE_ENDPOINT=http://customer-service:8082/api
     restart: always
-
   # pactbroker:
   #   container_name: pactbroker
   #   image: pactfoundation/pact-broker:latest
@@ -252,6 +285,6 @@ services:
   #   depends_on:
   #     - postgres
 
-networks: 
+networks:
   broker-kafka:
-    driver: bridge  
+    driver: bridge
