@@ -15,6 +15,12 @@ func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db: db}
 }
 
+func (r *Repository) IsUsernameExist(username string) bool {
+	user := entity.User{}
+	r.db.Find(&user, "username = ?", username)
+	return user.Username != ""
+}
+
 func (r *Repository) IsUserExist(email string) bool {
 	user := entity.User{}
 	r.db.Find(&user, "email = ?", email)
