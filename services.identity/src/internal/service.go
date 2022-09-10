@@ -23,6 +23,11 @@ func NewService(repo *Repository) *Service {
 
 func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 
+	IsUsernameExist := s.repo.IsUsernameExist(user.Username)
+	if IsUsernameExist {
+		return user, errors.New("Username is already exist!")
+	}
+
 	isEmailExist := s.repo.IsUserExist(user.Email)
 	if isEmailExist {
 		return user, errors.New("Email is already exist!")
@@ -36,6 +41,7 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 
 	event := event.UserCreated{
 		ID:        usr.ID,
+		Username:  usr.Username,
 		Email:     usr.Email,
 		FirstName: usr.FirstName,
 		LastName:  usr.LastName}
