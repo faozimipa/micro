@@ -63,7 +63,7 @@
                     "keys_to_sign": [
                         "access_token"
                     ],
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
+                    "jwk_url": "http://file_server:8080/jwk/symmetric.json",
                     "disable_jwk_security": true
                 }
             }
@@ -95,15 +95,6 @@
             "method": "GET",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
-                    "disable_jwk_security": true
-                },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 1,
                     "clientMaxRate": 1,
@@ -125,8 +116,10 @@
                     "is_collection": true,
                     "target": "",
                     "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "customer"
+                        "auth/validator": {
+                            "alg": "RS256",
+                            "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
+                            "disable_jwk_security": true
                         }
                     }
                 }
@@ -140,13 +133,9 @@
             "method": "GET",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keyloack::8080/auth/realms/master/protocol/openid-connect/certs",
                     "disable_jwk_security": true
                 }
             },
@@ -176,20 +165,10 @@
             "method": "POST",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
-                    "disable_jwk_security": true,
-                    "propagate-claims": [
-                        [
-                            "user_id",
-                            "user_id"
-                        ]
-                    ]
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true
                 }
             },
             "backend": [
@@ -218,13 +197,9 @@
             "method": "POST",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
                     "disable_jwk_security": true
                 }
             },
@@ -254,13 +229,9 @@
             "method": "GET",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
                     "disable_jwk_security": true
                 }
             },
@@ -295,20 +266,10 @@
             "method": "POST",
             "output_encoding": "json",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "HS256",
-                    "audience": [
-                        "http://krakend:5000"
-                    ],
-                    "issuer": "http://identity-service:8081",
-                    "jwk_url": "http://file_server:8002/jwk/symmetric.json",
-                    "disable_jwk_security": true,
-                    "propagate-claims": [
-                        [
-                            "user_id",
-                            "user_id"
-                        ]
-                    ]
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true
                 }
             },
             "backend": [
@@ -326,6 +287,34 @@
                             "return_error_details": "customer"
                         }
                     }
+                }
+            ]
+        },
+        {
+            "endpoint": "/keycloak-protected",
+            "headers_to_pass": [
+                "Authorization"
+            ],
+            "extra_config": {
+                "auth/validator": {
+                    "alg": "RS256",
+                    "jwk_url": "http://keycloak:8080/auth/realms/master/protocol/openid-connect/certs",
+                    "disable_jwk_security": true
+                }
+            },
+            "backend": [
+                {
+                    "url_pattern": "/api/customers",
+                    "encoding": "json",
+                    "sd": "static",
+                    "host": [
+                        "http://customer-service:8082"
+                    ],
+                    "mapping": {
+                        "collection": "customers"
+                    },
+                    "disable_host_sanitize": true,
+                    "is_collection": true
                 }
             ]
         }
