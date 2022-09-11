@@ -10,7 +10,6 @@ import (
 	"github.com/faozimipa/micro/services.identity/src/event"
 	"github.com/faozimipa/micro/shared/config"
 	"github.com/faozimipa/micro/shared/kafka"
-	"github.com/faozimipa/micro/shared/keyloack"
 )
 
 type Service struct {
@@ -36,10 +35,10 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	}
 
 	//get token from user keyloack
-	tokenKey, err:= keyloack.GetToken()
-	if err != nil{
-		return user, errors.New("Something wrong!")
-	}
+	// tokenKey, err:= keyloack.GetToken()
+	// if err != nil{
+	// 	return user, errors.New("Something wrong!")
+	// }
 
 	client := gocloak.NewClient(config.AppConfig.KeyloackHost)
 	ctx := context.Background()
