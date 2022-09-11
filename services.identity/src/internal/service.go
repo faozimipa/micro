@@ -88,7 +88,7 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 		Email:     usr.Email,
 		FirstName: usr.FirstName,
 		LastName:  usr.LastName,
-		Username:  usr.Username
+		Username:  usr.Username,
 	}
 
 	payload, _ := json.Marshal(event)
