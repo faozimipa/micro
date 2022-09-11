@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/Nerzal/gocloak/v11"
 	"github.com/faozimipa/micro/services.identity/src/entity"
@@ -64,6 +65,8 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	if err != nil {
 		return user, errors.New("Something wrong!")
 	} else {
+		fmt.Println("user created wwith id :")
+		fmt.Println(userIDKeyLoack)
 		user.ID = userIDKeyLoack
 	}
 
