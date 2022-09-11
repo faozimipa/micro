@@ -21,3 +21,5 @@ pact.log
 _logs/
 dbdata
 dbdata/
+dbdata/*
+
