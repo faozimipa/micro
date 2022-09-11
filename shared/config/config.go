@@ -16,11 +16,25 @@ type Config struct {
 	DbHost                  string `mapstructure:"DB_HOST"`
 	DbName                  string `mapstructure:"DB_NAME"`
 	AppPort                 string `mapstructure:"APP_PORT"`
+
+	KeyloackHost			string `mapstructure:"KEY_HOST"`
+	KeyloacPort				string `mapstructure:"KEY_PORT"`
+	KeyloackRealm			string `mapstructure:"KEY_REALM"`
+	KeyloackUsername		string `mapstructure:"KEY_USERNAME"`
+	KeyloackPassword		string `mapstructure:"KEY_PASSWORD"`
+	KeyloackGrantType		string `mapstructure:"KEY_GRANT_TYPE"`
+	KeyloackClientId		string `mapstructure:"KEY_CLIENT_ID"`
+	KeyloackClientSecret	string `mapstructure:"KEY_CLIENT_SECRET"`
+
 	KafkaUserTopic          string `mapstructure:"KAFKA_USER_TOPIC"`
 	KafkaProductTopic       string `mapstructure:"KAFKA_PRODUCT_TOPIC"`
 	KafkaOrderTopic         string `mapstructure:"KAFKA_ORDER_TOPIC"`
 	KafkaBrokerAddress      string `mapstructure:"KAFKA_BROKER_ADDRESS"`
 	CustomerServiceEndpoint string `mapstructure:"CUSTOMER_SERVICE_ENDPOINT"`
+}
+
+func (c Config) getKeyloackUrl() string {
+	return fmt.Sprintf("http://localhost:8080/auth/realms/%s/protocol/openid-connect", c.KeyloackRealm)
 }
 
 func (c Config) GetDBURL() string {
