@@ -11,6 +11,7 @@ import (
 	"github.com/faozimipa/micro/services.identity/src/event"
 	"github.com/faozimipa/micro/shared/config"
 	"github.com/faozimipa/micro/shared/kafka"
+	"github.com/google/uuid"
 )
 
 type Service struct {
@@ -54,11 +55,11 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	 Email:     	gocloak.StringP(user.Email),
 	 Enabled:   	gocloak.BoolP(true),
 	 Username:  	gocloak.StringP(user.Username),
-	 Credentials: 	gocloak.Credentials{
-		Temporary: 	gocloak.BoolP(false),
-		Type:		gocloak.StringP("password"),
-		Value: 		gocloak.StringP(user.Password),
-	 },
+	//  Credentials: 	gocloak.User.Credentials{
+	// 	Temporary: 	gocloak.BoolP(false),
+	// 	Type:		gocloak.StringP("password"),
+	// 	Value: 		gocloak.StringP(user.Password),
+	//  },
 	}
    
 	userIDKeyLoack, err := client.CreateUser(ctx, token.AccessToken, config.AppConfig.KeyloackRealm, userKeyloack)
@@ -67,7 +68,8 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	} else {
 		fmt.Println("user created wwith id :")
 		fmt.Println(userIDKeyLoack)
-		user.ID = userIDKeyLoack
+		uid, _ := uuid.Parse(userIDKeyLoack)
+		user.ID = uid
 	}
 
 	// registeredUser, err := keyloack.RegisterUser(user, tokenKey)
@@ -86,7 +88,6 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 
 	event := event.UserCreated{
 		ID:        usr.ID,
-		Username:  usr.Username,
 		Email:     usr.Email,
 		FirstName: usr.FirstName,
 		LastName:  usr.LastName,
