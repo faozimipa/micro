@@ -37,11 +37,6 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	}
 
 	var url = fmt.Sprintf("http://%s:%s", config.AppConfig.KeyloackHost, config.AppConfig.KeyloackPort)
-	fmt.Printf(url)
-	fmt.Printf(config.AppConfig.KeyloackUsername)
-	fmt.Printf(config.AppConfig.KeyloackPassword)
-	fmt.Printf(config.AppConfig.KeyloackRealm)
-
 	client := gocloak.NewClient(url)
 	ctx := context.Background()
 	token, err := client.LoginAdmin(ctx, config.AppConfig.KeyloackUsername, config.AppConfig.KeyloackPassword, config.AppConfig.KeyloackRealm)
@@ -56,11 +51,6 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	 Email:     	gocloak.StringP(user.Email),
 	 Enabled:   	gocloak.BoolP(true),
 	 Username:  	gocloak.StringP(user.Username),
-	//  Credentials: 	gocloak.User.Credentials{
-	// 	Temporary: 	gocloak.BoolP(false),
-	// 	Type:		gocloak.StringP("password"),
-	// 	Value: 		gocloak.StringP(user.Password),
-	//  },
 	}
    
 	userIDKeyLoack, err := client.CreateUser(ctx, token.AccessToken, config.AppConfig.KeyloackRealm, userKeyloack)
@@ -72,16 +62,7 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 		uid, _ := uuid.Parse(userIDKeyLoack)
 		user.ID = uid
 	}
-
-	// registeredUser, err := keyloack.RegisterUser(user, tokenKey)
-	// if err != nil{
-	// 	return user, errors.New("Something wrong!")
-	// }else{
-	// 	user.ID = registeredUser.ID
-	// }
-
-
-	// user.ID = uuid.New()
+	
 	usr, err := s.repo.Create(user)
 	if err != nil {
 		return user, err
@@ -103,4 +84,16 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 
 func (s *Service) ValidateUser(email string, password string) (entity.User, error) {
 	return s.repo.GetUserByEmail(email, password)
+}
+
+func (s *Service) Login(username string, password string) (*gocloak.JWT, error) {
+	var url = fmt.Sprintf("http://%s:%s", config.AppConfig.KeyloackHost, config.AppConfig.KeyloackPort)
+	client := gocloak.NewClient(url)
+	ctx := context.Background()
+	token, err := client.Login(ctx, config.AppConfig.KeyloackClientId, config.AppConfig.KeyloackClientSecret, config.AppConfig.KeyloackRealm, username, password)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, errors.New("Invalid Credentials.")
+	}
+	return token, nil
 }
