@@ -43,3 +43,14 @@ func (h *Handler) signIn(context *gin.Context) {
 	}
 	context.JSON(http.StatusOK, jwt.TokenResponse{AccessToken: token})
 }
+
+func (h *Handler) login(context *gin.Context) {
+	var input *entity.LoginCredential
+	context.BindJSON(&input)
+	token, err := h.service.Login(input.Username, input.Password)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, "Invalid Credentials.")
+		return
+	}
+	context.JSON(http.StatusOK, token)
+}
