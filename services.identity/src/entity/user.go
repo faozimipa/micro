@@ -16,3 +16,8 @@ type User struct {
 	CreatedAt time.Time `gorm:"not null default CURRENT_TIMESTAMP"`
 	UpdatedAt time.Time `gorm:"not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"`
 }
+
+type LoginCredential struct {
+	Username  string    `gorm:"size:255;not null;"`
+	Password  string    `gorm:"size:255;not null;"`
+}
