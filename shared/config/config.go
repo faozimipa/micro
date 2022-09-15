@@ -18,7 +18,7 @@ type Config struct {
 	AppPort                 string `mapstructure:"APP_PORT"`
 
 	KeyloackHost			string `mapstructure:"KEY_HOST"`
-	KeyloacPort				string `mapstructure:"KEY_PORT"`
+	KeyloackPort			string `mapstructure:"KEY_PORT"`
 	KeyloackRealm			string `mapstructure:"KEY_REALM"`
 	KeyloackUsername		string `mapstructure:"KEY_USERNAME"`
 	KeyloackPassword		string `mapstructure:"KEY_PASSWORD"`
