@@ -35,13 +35,18 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	if isEmailExist {
 		return user, errors.New("Email is already exist!")
 	}
-	
+
 	var url = fmt.Sprintf("http://%s:%s", config.AppConfig.KeyloackHost, config.AppConfig.KeyloackPort)
+	fmt.Printf(url)
+	fmt.Printf(config.AppConfig.KeyloackUsername)
+	fmt.Printf(config.AppConfig.KeyloackPassword)
+	fmt.Printf(config.AppConfig.KeyloackRealm)
 
 	client := gocloak.NewClient(url)
 	ctx := context.Background()
 	token, err := client.LoginAdmin(ctx, config.AppConfig.KeyloackUsername, config.AppConfig.KeyloackPassword, config.AppConfig.KeyloackRealm)
 	if err != nil {
+		fmt.Println(err.Error())
 		return user, errors.New("Something wrong on login!")
 	}
    
