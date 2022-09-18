@@ -9,22 +9,22 @@ import (
 var AppConfig Config
 
 type Config struct {
-	DbDriver                string `mapstructure:"DB_DRIVER"`
-	DbUser                  string `mapstructure:"DB_USER"`
-	DbPassword              string `mapstructure:"DB_PASSWORD"`
-	DbPort                  string `mapstructure:"DB_PORT"`
-	DbHost                  string `mapstructure:"DB_HOST"`
-	DbName                  string `mapstructure:"DB_NAME"`
-	AppPort                 string `mapstructure:"APP_PORT"`
+	DbDriver   string `mapstructure:"DB_DRIVER"`
+	DbUser     string `mapstructure:"DB_USER"`
+	DbPassword string `mapstructure:"DB_PASSWORD"`
+	DbPort     string `mapstructure:"DB_PORT"`
+	DbHost     string `mapstructure:"DB_HOST"`
+	DbName     string `mapstructure:"DB_NAME"`
+	AppPort    string `mapstructure:"APP_PORT"`
 
-	KeyloackHost			string `mapstructure:"KEY_HOST"`
-	KeyloackPort			string `mapstructure:"KEY_PORT"`
-	KeyloackRealm			string `mapstructure:"KEY_REALM"`
-	KeyloackUsername		string `mapstructure:"KEY_USERNAME"`
-	KeyloackPassword		string `mapstructure:"KEY_PASSWORD"`
-	KeyloackGrantType		string `mapstructure:"KEY_GRANT_TYPE"`
-	KeyloackClientId		string `mapstructure:"KEY_CLIENT_ID"`
-	KeyloackClientSecret	string `mapstructure:"KEY_CLIENT_SECRET"`
+	KeyloackHost         string `mapstructure:"KEY_HOST"`
+	KeyloackPort         string `mapstructure:"KEY_PORT"`
+	KeyloackRealm        string `mapstructure:"KEY_REALM"`
+	KeyloackUsername     string `mapstructure:"KEY_USERNAME"`
+	KeyloackPassword     string `mapstructure:"KEY_PASSWORD"`
+	KeyloackGrantType    string `mapstructure:"KEY_GRANT_TYPE"`
+	KeyloackClientId     string `mapstructure:"KEY_CLIENT_ID"`
+	KeyloackClientSecret string `mapstructure:"KEY_CLIENT_SECRET"`
 
 	KafkaUserTopic          string `mapstructure:"KAFKA_USER_TOPIC"`
 	KafkaProductTopic       string `mapstructure:"KAFKA_PRODUCT_TOPIC"`
