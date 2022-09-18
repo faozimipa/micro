@@ -3,7 +3,6 @@ package customer
 import (
 	"github.com/faozimipa/micro/services.customer/src/entity"
 	"github.com/google/uuid"
-	gouuid "github.com/satori/go.uuid"
 )
 
 type Service struct {
@@ -42,7 +41,7 @@ func (s *Service) GetBasketItems(customerID uuid.UUID) ([]entity.BasketItem, err
 
 func (s *Service) AddItemToBasket(basketItem *entity.BasketItem, userID string) (*entity.BasketItem, error) {
 
-	customerID, _ := gouuid.FromString(userID)
+	customerID, _ := uuid.Parse(userID)
 	basket, err := s.repo.GetBasket(uuid.UUID(customerID))
 	if err != nil {
 		return basketItem, err

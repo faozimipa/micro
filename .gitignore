@@ -15,7 +15,7 @@
 # vendor/
 
 __debug_bin
-
+.DS_Store
 *.log
 pact.log
 _logs/

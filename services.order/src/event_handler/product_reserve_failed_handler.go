@@ -5,16 +5,15 @@ import (
 	"log"
 
 	"github.com/faozimipa/micro/services.order/src/entity"
-	"github.com/faozimipa/micro/services.order/src/internal"
+	order "github.com/faozimipa/micro/services.order/src/internal"
 	"github.com/faozimipa/micro/shared/config"
 	"github.com/faozimipa/micro/shared/kafka"
 	"github.com/google/uuid"
-	gouuid "github.com/satori/go.uuid"
 )
 
 func FailOrder(service *order.Service, messageKey []byte) {
 
-	orderID, _ := gouuid.FromString(string(messageKey))
+	orderID, _ := uuid.Parse(string(messageKey))
 	order, err := service.UpdateOrderStatus(uuid.UUID(orderID), int(entity.OrderFailed))
 	if err != nil {
 		log.Printf("FailOrder.UpdateOrderStatus failed: %v", err.Error())

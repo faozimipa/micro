@@ -44,15 +44,15 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 		fmt.Println(err.Error())
 		return user, errors.New("Something wrong on login!")
 	}
-   
+
 	userKeyloack := gocloak.User{
-	 FirstName: 	gocloak.StringP(user.FirstName),
-	 LastName:  	gocloak.StringP(user.LastName),
-	 Email:     	gocloak.StringP(user.Email),
-	 Enabled:   	gocloak.BoolP(true),
-	 Username:  	gocloak.StringP(user.Username),
+		FirstName: gocloak.StringP(user.FirstName),
+		LastName:  gocloak.StringP(user.LastName),
+		Email:     gocloak.StringP(user.Email),
+		Enabled:   gocloak.BoolP(true),
+		Username:  gocloak.StringP(user.Username),
 	}
-   
+
 	userIDKeyLoack, err := client.CreateUser(ctx, token.AccessToken, config.AppConfig.KeyloackRealm, userKeyloack)
 	if err != nil {
 		return user, errors.New("Something wrong on create!")
@@ -62,7 +62,7 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 		uid, _ := uuid.Parse(userIDKeyLoack)
 		user.ID = uid
 	}
-	
+
 	usr, err := s.repo.Create(user)
 	if err != nil {
 		return user, err

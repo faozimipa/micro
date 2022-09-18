@@ -10,7 +10,6 @@ import (
 	"github.com/faozimipa/micro/shared/config"
 	"github.com/faozimipa/micro/shared/kafka"
 	"github.com/google/uuid"
-	gouuid "github.com/satori/go.uuid"
 )
 
 type Service struct {
@@ -23,7 +22,7 @@ func NewService(repo *Repository) *Service {
 	}
 }
 
-//CreateOrder ...
+// CreateOrder ...
 func (s *Service) CreateOrder(customerID string) (entity.Order, error) {
 	order := entity.Order{}
 	order.ID = uuid.New()
@@ -34,7 +33,7 @@ func (s *Service) CreateOrder(customerID string) (entity.Order, error) {
 		return order, err
 	}
 
-	customerIDGouuid, _ := gouuid.FromString(customerID)
+	customerIDGouuid, _ := uuid.Parse(customerID)
 	order.Status = entity.OrderCreated
 	order.CustomerID = uuid.UUID(customerIDGouuid)
 
