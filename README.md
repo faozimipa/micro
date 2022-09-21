@@ -23,7 +23,7 @@ Event-driven architecture (EDA) is a software architecture paradigm promoting th
   set Access Type to ``confidential``
 
   on Credential tabs set Client Authenticator to ``Client id and secret key``
-  genrate secret key 
+  generate secret key 
   on Keys tab set Use JWKS URL to on
   set JWKS URL to ``http://localhost:8080/auth/realms/master/protocol/openid-connect/certs``
   

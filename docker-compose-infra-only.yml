@@ -86,7 +86,37 @@ services:
       - 9000:9000
     environment:
       KAFKA_BROKERCONNECT: kafka:29092
-
+  keycloak:
+    # image: jboss/keycloak:13.0.1
+    # image: sleighzy/keycloak
+    # image: quay.io/keycloak/keycloak:legacy
+    build:
+     context: ./
+     dockerfile: ./keyloack/Dockerfile
+     args:
+        ADMIN_USERNAME: admin
+        ADMIN_PASSWORD: admin
+    container_name: keycloak
+    # platform: linux/amd64
+    # restart: unless-stopped
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - broker-kafka
+    ports:
+      - 8080:8080 # expose to host port 8403
+      - 9990:9990
+      - 8443:8443
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_PORT: 5432
+      DB_DATABASE: dbkeyloack
+      DB_USER: dbadmin
+      DB_PASSWORD: dbadmin
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
   broker:
     container_name: broker
     image: pactfoundation/pact-broker:latest
