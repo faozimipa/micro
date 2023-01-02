@@ -3,7 +3,7 @@ Event Driven Microservice
 Abstract:
 Event-driven architecture (EDA) is a software architecture paradigm promoting the production, detection, consumption of, and reaction to events.
 
-![](https://github.com/faozimipa/micro/blob/development/_img/image.png)
+![](https://github.com/faozimipa/micro/blob/main/_img/image.png)
 ## Install & Dependence
 - Docker
 - golang 
