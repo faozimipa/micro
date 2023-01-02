@@ -202,3 +202,11 @@ Event-driven architecture (EDA) is a software architecture paradigm promoting th
   
 ## License
 
+## Notes
+- VsCode setup
+```
+ "go.gopath": "/Users/username/your-gopath-projects",
+    "gopls": {
+        "build.experimentalWorkspaceModule": true
+    }
+```
