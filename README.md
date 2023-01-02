@@ -8,7 +8,7 @@ Event-driven architecture (EDA) is a software architecture paradigm promoting th
 - Docker
 - golang 
 
-## Use
+## How to Use
 - Build services
   ```
   docker compose up
