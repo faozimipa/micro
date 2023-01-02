@@ -57,6 +57,12 @@ func (s *Service) SignUp(user *entity.User) (*entity.User, error) {
 	if err != nil {
 		return user, errors.New("Something wrong on create!")
 	} else {
+		error := client.SetPassword(ctx, token.AccessToken, userIDKeyLoack, config.AppConfig.KeyloackRealm, user.Password, false)
+
+		if error != nil {
+			return user, errors.New("Something wrong on create password!")
+		}
+
 		fmt.Println("user created wwith id :")
 		fmt.Println(userIDKeyLoack)
 		uid, _ := uuid.Parse(userIDKeyLoack)
